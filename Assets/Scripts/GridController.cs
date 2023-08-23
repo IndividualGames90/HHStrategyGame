@@ -25,18 +25,21 @@ namespace IndividualGames.HappyHourStrategyCase
             GenerateGrid();
             transform.position = m_originObject.position;
 
-            m_pathFinding.AssignIsWalkeables(m_navNodes);
 
             //TEST
             FindPath(0, 0, m_rows - 1, m_columns - 1);
             FindPath(0, 0, m_rows - 3, m_columns - 4);
             var test = FindPath(0, 0, 4, 2);
             var testfirst = test.First();
+
+
         }
 
 
         public List<GameObject> FindPath(int a_startX, int a_startY, int a_endX, int a_endY)
         {
+            m_pathFinding.AssignIsWalkeables(m_navNodes);
+
             List<PathNode> path = m_pathFinding.FindPath(a_startX, a_startY, a_endX, a_endY);
 
             List<GameObject> returnList = new();

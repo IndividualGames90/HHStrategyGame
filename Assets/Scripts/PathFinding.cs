@@ -27,7 +27,11 @@ namespace IndividualGames.HappyHourStrategyCase
             {
                 var element = navnode.GetComponent<NavGridElement>();
                 var pathNode = m_grid.GetGridObject(element.X, element.Y);
-                pathNode.isWalkable = !element.IsObstacle();
+                var isObstacle = element.IsObstacle();
+                if (isObstacle)
+                {
+                    pathNode.isWalkable = !isObstacle;
+                }
             }
         }
 
