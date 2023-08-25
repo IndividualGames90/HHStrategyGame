@@ -3,9 +3,10 @@
 namespace IndividualGames.HappyHourStrategyCase
 {
     /// <summary>
-    /// Prefab Factory Interface. Factory to create prefabs.
+    /// Prefab Factory Interface for PUN Prefabs.
+    /// Requirements: Prefab have to be in root/Resources folder and created by name.
     /// </summary>
-    public interface IPrefabFactory
+    public interface IPrefabFactoryPUN
     {
         public abstract GameObject Create(string a_prefabName, Vector3 a_position, Quaternion a_rotation);
     }

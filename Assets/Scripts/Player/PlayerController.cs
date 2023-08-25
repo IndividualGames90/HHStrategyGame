@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using UnityEngine;
 
 namespace IndividualGames.HappyHourStrategyCase
@@ -12,7 +13,6 @@ namespace IndividualGames.HappyHourStrategyCase
         public static int LayerMaskPlayer = 1 << 7;
         public static int LayerMaskGround = 1 << 6;
 
-        private UnitSelector m_unitSelector;
         private Touch m_touch;
         private Camera m_mainCamera;
         private Vector3 m_dragStartPosition;
@@ -20,21 +20,27 @@ namespace IndividualGames.HappyHourStrategyCase
         private Ray m_ray;
         private RaycastHit m_hit;
 
+        private UnitSelector m_unitSelector = new();
         private NavGridElement m_destinationNavGridElement = null;
+
+        private Stopwatch m_stopwatch = new();
+        private const float c_updateInterval = .1f;
 
 
         private void Awake()
         {
             m_mainCamera = Camera.main;
-
-            m_unitSelector = new();
+            m_stopwatch.Start();
         }
 
 
         void Update()
         {
-            MouseInput();//Had to have this to test Multiplayer with editor/phone combo.
-            TouchInput();
+            if (m_stopwatch.Elapsed.Milliseconds > c_updateInterval)
+            {
+                MouseInput();//Had to have mouse input to test Multiplayer with editor/phone combo.
+                TouchInput();
+            }
         }
 
 
@@ -42,6 +48,8 @@ namespace IndividualGames.HappyHourStrategyCase
         {
             if (Input.GetMouseButtonDown(0))
             {
+                m_stopwatch.Restart();
+
                 OnTouchBegan(Input.mousePosition);
             }
         }
@@ -51,6 +59,8 @@ namespace IndividualGames.HappyHourStrategyCase
         {
             if (Input.touchCount > 0)
             {
+                m_stopwatch.Restart();
+
                 m_touch = Input.GetTouch(0);
 
                 switch (m_touch.phase)

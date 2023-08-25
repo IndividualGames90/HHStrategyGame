@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace IndividualGames.HappyHourStrategyCase
+﻿namespace IndividualGames.HappyHourStrategyCase
 {
     /// <summary>
     /// Basic Generic Grid.
@@ -35,7 +33,6 @@ namespace IndividualGames.HappyHourStrategyCase
 
         public T GetGridObject(int a_x, int a_y)
         {
-            Debug.Log($"{a_x} {a_y} ");
             return gridArray[a_x, a_y];
         }
     }

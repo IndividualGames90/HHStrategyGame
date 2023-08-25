@@ -14,7 +14,6 @@ namespace IndividualGames.HappyHourStrategyCase
         private bool m_unitMoving = false;
 
         private NavGridElement m_currentNavGridElement;
-        private GameObject[] m_path;
         private List<GameObject> m_pathList;
         private int m_pathIterator = 0;
 
@@ -41,10 +40,9 @@ namespace IndividualGames.HappyHourStrategyCase
                                       m_currentNavGridElement.Y,
                                       a_destinationElement.X,
                                       a_destinationElement.Y);
-            m_path = m_pathList.ToArray();
 
             m_pathIterator = 0;
-            var initialDestination = m_path[m_pathIterator].transform.position;
+            var initialDestination = m_pathList[m_pathIterator].transform.position;
 
             if (!m_unitMoving || !SameDestination(initialDestination))
             {
@@ -71,31 +69,33 @@ namespace IndividualGames.HappyHourStrategyCase
         private IEnumerator MoveCoroutine(Vector3 a_destination)
         {
             m_unitMoving = true;
-            Vector3 initialPosition = transform.position;
-            a_destination.y = initialPosition.y;
 
-            float distanceToDestination = Vector3.Distance(initialPosition, a_destination);
-            float moveDuration = distanceToDestination / m_moveSpeed;
-
-            float elapsedTime = 0f;
-
-            while (elapsedTime < moveDuration)
+            while (m_pathList.Count > m_pathIterator)
             {
-                float t = elapsedTime / moveDuration;
-                transform.position = Vector3.Lerp(initialPosition, a_destination, t);
+                Vector3 initialPosition = transform.position;
+                var currentDestination = m_pathList[m_pathIterator].transform.position;
+                currentDestination.y = initialPosition.y;
 
-                elapsedTime += Time.deltaTime;
-                yield return m_moveWait;
+                //float distanceToDestination = Vector3.Distance(initialPosition, currentDestination);
+                float distanceToDestination = (initialPosition - currentDestination).sqrMagnitude;
+                float moveDuration = distanceToDestination / (m_moveSpeed * m_moveSpeed);
+
+                float elapsedTime = 0f;
+
+                while (elapsedTime < moveDuration)
+                {
+                    float t = elapsedTime / moveDuration;
+                    transform.position = Vector3.Lerp(initialPosition, currentDestination, t);
+
+                    elapsedTime += Time.deltaTime;
+                    yield return m_moveWait;
+                }
+
+                m_pathIterator++;
+                transform.position = currentDestination;
             }
 
-            transform.position = a_destination;
             m_unitMoving = false;
-
-            m_pathIterator++;
-            if (m_path.Length > m_pathIterator)
-            {
-                StartCoroutine(MoveCoroutine(m_path[m_pathIterator].transform.position));
-            }
         }
     }
 }
