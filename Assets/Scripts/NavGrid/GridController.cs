@@ -22,17 +22,10 @@ namespace IndividualGames.HappyHourStrategyCase
         private void Awake()
         {
             m_pathFinding = new(m_rows, m_columns);
+
             GenerateGrid();
+
             transform.position = m_originObject.position;
-
-
-            //TEST
-            FindPath(0, 0, m_rows - 1, m_columns - 1);
-            FindPath(0, 0, m_rows - 3, m_columns - 4);
-            var test = FindPath(0, 0, 4, 2);
-            var testfirst = test.First();
-
-
         }
 
 
@@ -57,9 +50,6 @@ namespace IndividualGames.HappyHourStrategyCase
 
         private void GenerateGrid()
         {
-            /*for (int y = 0; y < m_rows; y++)
-            {
-                for (int x = 0; x < m_columns; x++)*/
             for (int x = 0; x < m_rows; x++)
             {
                 for (int y = 0; y < m_columns; y++)
@@ -72,6 +62,7 @@ namespace IndividualGames.HappyHourStrategyCase
                                                 0,
                                                 y * m_navNodePrefab.transform.localScale.y),
                                             Quaternion.identity);
+
                     cube.name = $"NavNode {y}{x}";
                     var element = cube.GetComponent<NavGridElement>();
                     element.X = x;

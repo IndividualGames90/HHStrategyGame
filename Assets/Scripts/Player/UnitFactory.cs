@@ -6,7 +6,7 @@ namespace IndividualGames.HappyHourStrategyCase
     /// <summary>
     /// Prefab Factory Implementation. Factory to create prefabs.
     /// </summary>
-    public class UnitFactory : IPrefabFactory
+    public class UnitFactory : IPrefabFactoryPUN
     {
         public virtual GameObject Create(string a_prefabName, Vector3 a_position, Quaternion a_rotation)
         {
