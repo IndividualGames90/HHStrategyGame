@@ -16,6 +16,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
         private void Awake()
         {
+            m_menuFrame.SetActive(true);
             PhotonController.JoinedRoom.Connect(PlayerJoined);
             m_unitSignalHub.ConnectToHub(ResourceCollected);
         }
