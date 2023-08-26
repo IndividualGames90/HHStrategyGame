@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace IndividualGames.HappyHourStrategyCase
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private GridController m_gridController;
+        [SerializeField] private RectTransform m_selectionBoxView;
 
         public static int LayerMaskPlayer = 1 << 7;
         public static int LayerMaskGround = 1 << 6;
@@ -27,11 +29,16 @@ namespace IndividualGames.HappyHourStrategyCase
         private const float c_updateInterval = .1f;
         private float m_elapsedTime;
 
+        private SelectionBox m_selectionBox;
+
+        private List<ISelectable> m_selectableUnits = new();
+
 
         private void Awake()
         {
             m_mainCamera = Camera.main;
             m_stopwatch.Start();
+            m_selectionBox = new(m_selectionBoxView);
         }
 
 
@@ -52,7 +59,15 @@ namespace IndividualGames.HappyHourStrategyCase
             {
                 m_stopwatch.Restart();
 
-                OnTouchBegan(Input.mousePosition);
+                OnTouch(Input.mousePosition);
+            }
+            else if (Input.GetMouseButton(0))
+            {
+                OnDrag(Input.mousePosition);
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                OnRelease();
             }
         }
 
@@ -62,34 +77,38 @@ namespace IndividualGames.HappyHourStrategyCase
             if (Input.touchCount > 0)
             {
                 m_stopwatch.Restart();
-
                 m_touch = Input.GetTouch(0);
 
                 switch (m_touch.phase)
                 {
                     case TouchPhase.Began:
-                        OnTouchBegan(m_touch.position);
+                        OnTouch(m_touch.position);
+                        break;
+
+                    case TouchPhase.Moved:
+                        OnDrag(m_touch.position);
+                        break;
+
+                    case TouchPhase.Ended:
+                        OnRelease();
                         break;
                 }
             }
         }
 
 
-        private void OnTouchBegan(Vector2 a_touchPosition)
+        private void OnTouch(Vector2 a_touchPosition)
         {
-            m_dragStartPosition = m_mainCamera.ScreenToWorldPoint(a_touchPosition);
-            m_dragStartPosition.z = 0;
+            m_dragStartPosition = a_touchPosition;
 
             m_ray = m_mainCamera.ScreenPointToRay(a_touchPosition);
 
-            if (Physics.Raycast(m_ray, out m_hit, Mathf.Infinity, LayerMaskPlayer))
+            if (RayCastToPlayer())
             {
-                GameObject hitUnit = m_hit.collider.gameObject;
-                m_unitSelector.SelectUnit(hitUnit);
+                m_unitSelector.SelectUnit(m_hit.collider.gameObject);
             }
-            else if (Physics.Raycast(m_ray, out m_hit, Mathf.Infinity, LayerMaskGround))
+            else if (RayCastToGround())
             {
-                var point = m_hit.point;
                 m_destinationNavGridElement = m_hit.transform.GetComponent<NavGridElement>();
 
                 if (m_destinationNavGridElement != null)
@@ -97,6 +116,47 @@ namespace IndividualGames.HappyHourStrategyCase
                     m_unitSelector.MoveUnitsTo(m_gridController, m_destinationNavGridElement);
                 }
             }
+        }
+
+
+        private void OnDrag(Vector2 a_touchPosition)
+        {
+            m_selectionBox.StartSelecting(m_dragStartPosition,
+                                          a_touchPosition,
+                                          m_selectableUnits);
+        }
+
+
+        private void OnRelease()
+        {
+            m_selectionBox.DisableSelectionBox();
+        }
+
+
+        public void RegisterUnit(UnitController unitController)
+        {
+            m_selectableUnits.Add(unitController);
+        }
+
+
+        private void OnUnitSelected(ISelectable a_selectedUnit)
+        {
+            if (a_selectedUnit is UnitController unitController)
+            {
+                UnityEngine.Debug.Log("TODO!");
+            }
+        }
+
+
+        private bool RayCastToPlayer()
+        {
+            return Physics.Raycast(m_ray, out m_hit, Mathf.Infinity, LayerMaskPlayer);
+        }
+
+
+        private bool RayCastToGround()
+        {
+            return Physics.Raycast(m_ray, out m_hit, Mathf.Infinity, LayerMaskGround);
         }
     }
 }

@@ -4,18 +4,19 @@ using UnityEngine;
 
 namespace IndividualGames.HappyHourStrategyCase
 {
+
     /// <summary>
     /// 3D Grid controller
     /// </summary>
     public class GridController : MonoBehaviour
     {
         [SerializeField] private GameObject m_navNodePrefab;
+        [SerializeField, Tooltip(ToolTips.NavNodeParent)] private Transform m_navNodesParent;
         [SerializeField] private int m_rows = 10;
         [SerializeField] private int m_columns = 10;
-        [SerializeField] private Transform m_originObject;
+        [SerializeField] private Transform m_gridOrigin;
 
         private List<GameObject> m_navNodes = new();
-
         private PathFinding m_pathFinding = null;
 
 
@@ -25,7 +26,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
             GenerateGrid();
 
-            transform.position = m_originObject.position;
+            transform.position = m_gridOrigin.position;
         }
 
 
@@ -56,7 +57,7 @@ namespace IndividualGames.HappyHourStrategyCase
                 {
                     GameObject cube = Instantiate(
                                             m_navNodePrefab,
-                                            m_originObject.position +
+                                            m_gridOrigin.position +
                                             new Vector3(
                                                 x * m_navNodePrefab.transform.localScale.x,
                                                 0,
@@ -64,6 +65,7 @@ namespace IndividualGames.HappyHourStrategyCase
                                             Quaternion.identity);
 
                     cube.name = $"NavNode {y}{x}";
+                    cube.transform.parent = m_navNodesParent;
                     var element = cube.GetComponent<NavGridElement>();
                     element.X = x;
                     element.Y = y;
