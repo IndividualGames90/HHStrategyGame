@@ -31,7 +31,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
         private SelectionBox m_selectionBox;
 
-        private List<UnitController> m_selectableUnits = new();
+        private List<ISelectable> m_selectableUnits = new();
 
 
         private void Awake()
@@ -59,7 +59,11 @@ namespace IndividualGames.HappyHourStrategyCase
             {
                 m_stopwatch.Restart();
 
-                OnTouchBegan(Input.mousePosition);
+                OnTouch(Input.mousePosition);
+            }
+            else if (Input.GetMouseButton(0))
+            {
+                OnDrag(Input.mousePosition);
             }
         }
 
@@ -69,32 +73,34 @@ namespace IndividualGames.HappyHourStrategyCase
             if (Input.touchCount > 0)
             {
                 m_stopwatch.Restart();
-
                 m_touch = Input.GetTouch(0);
 
                 switch (m_touch.phase)
                 {
                     case TouchPhase.Began:
-                        OnTouchBegan(m_touch.position);
+                        OnTouch(m_touch.position);
+                        break;
+
+                    case TouchPhase.Moved:
+                        OnDrag(m_touch.position);
                         break;
                 }
             }
         }
 
 
-        private void OnTouchBegan(Vector2 a_touchPosition)
+        private void OnTouch(Vector2 a_touchPosition)
         {
-            m_dragStartPosition = m_mainCamera.ScreenToWorldPoint(a_touchPosition);
-            m_dragStartPosition.z = 0;
+            m_dragStartPosition = a_touchPosition;
 
             m_ray = m_mainCamera.ScreenPointToRay(a_touchPosition);
 
-            if (Physics.Raycast(m_ray, out m_hit, Mathf.Infinity, LayerMaskPlayer))
+            if (RayCastToPlayer())
             {
                 GameObject hitUnit = m_hit.collider.gameObject;
                 m_unitSelector.SelectUnit(hitUnit);
             }
-            else if (Physics.Raycast(m_ray, out m_hit, Mathf.Infinity, LayerMaskGround))
+            else if ()
             {
                 var point = m_hit.point;
                 m_destinationNavGridElement = m_hit.transform.GetComponent<NavGridElement>();
@@ -107,79 +113,38 @@ namespace IndividualGames.HappyHourStrategyCase
         }
 
 
+        private void OnDrag(Vector2 a_touchPosition)
+        {
+            m_selectionBox.StartSelecting(m_dragStartPosition,
+                                          a_touchPosition,
+                                          m_selectableUnits);
+        }
+
+
         public void RegisterUnit(UnitController unitController)
         {
             m_selectableUnits.Add(unitController);
         }
-    }
-
-    public class SelectionBox
-    {
-        private float m_width;
-        private float m_height;
-
-        private RectTransform m_selectionBox;
-        private Vector2 m_anchoredPositionAdjustment;
-        private Vector2 m_sizeDeltaAdjustment;
-        private Bounds m_bounds;
-        private Camera m_mainCamera;
 
 
-        public SelectionBox(RectTransform a_selectionBox)
+        private void OnUnitSelected(ISelectable a_selectedUnit)
         {
-            m_selectionBox = a_selectionBox;
-            m_mainCamera = Camera.main;
-        }
-
-
-        public void StartSelecting(Vector2 a_startPosition, Vector2 a_endPosition, List<GameObject> a_selectables)
-        {
-            ResizeSelectionBox(a_startPosition, a_endPosition);
-            CheckSelectionBox(a_selectables);
-        }
-
-
-        private void ResizeSelectionBox(Vector2 a_startPosition, Vector2 a_endPosition)
-        {
-            m_width = a_endPosition.x - a_startPosition.x;
-            m_height = a_endPosition.y - a_endPosition.y;
-
-            m_anchoredPositionAdjustment.x = m_width / 2;
-            m_anchoredPositionAdjustment.y = m_height / 2;
-
-            m_sizeDeltaAdjustment.x = Mathf.Abs(m_width);
-            m_sizeDeltaAdjustment.y = Mathf.Abs(m_height);
-
-            m_selectionBox.anchoredPosition = a_startPosition + m_anchoredPositionAdjustment;
-            m_selectionBox.sizeDelta = m_sizeDeltaAdjustment;
-
-            m_bounds.center = m_selectionBox.anchoredPosition;
-            m_bounds.size = m_selectionBox.sizeDelta;
-        }
-
-
-        private void CheckSelectionBox(List<GameObject> a_selectables)
-        {
-            foreach (var selectable in a_selectables)
+            if (a_selectedUnit is UnitController unitController)
             {
-                if (InsideSelectionBox(m_mainCamera.WorldToScreenPoint(selectable.transform.position), m_bounds))
-                {
-                    UnityEngine.Debug.Log($"Inside Selectedion Box");
-                }
-                else
-                {
-                    UnityEngine.Debug.Log($"Outside Selectedion Box");
-                }
+                UnityEngine.Debug.Log("TODO!");
             }
         }
 
 
-        private bool InsideSelectionBox(Vector3 a_selectionPosition, Bounds a_bounds)
+        private bool RayCastToPlayer()
         {
-            return a_selectionPosition.x > a_bounds.min.x &&
-                   a_selectionPosition.x < a_bounds.max.x &&
-                   a_selectionPosition.y > a_bounds.min.y &&
-                   a_selectionPosition.y < a_bounds.max.y;
+            return Physics.Raycast(m_ray, out m_hit, Mathf.Infinity, LayerMaskPlayer);
+        }
+
+
+        private bool RayCastToGround()
+        {
+            return Physics.Raycast(m_ray, out m_hit, Mathf.Infinity, LayerMaskGround);
         }
     }
 }

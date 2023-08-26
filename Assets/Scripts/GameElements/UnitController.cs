@@ -7,7 +7,7 @@ namespace IndividualGames.HappyHourStrategyCase
     /// <summary>
     /// Unit main class for controls and resource collection.
     /// </summary>
-    public class UnitController : MonoBehaviour
+    public class UnitController : MonoBehaviour, ISelectable
     {
         public BasicSignal<int> ResourceCollected = new();
 
@@ -104,6 +104,12 @@ namespace IndividualGames.HappyHourStrategyCase
             }
 
             return false;
+        }
+
+
+        public GameObject GameObject()
+        {
+            return gameObject;
         }
     }
 }
