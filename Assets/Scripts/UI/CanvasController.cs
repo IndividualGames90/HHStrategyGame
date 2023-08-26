@@ -11,6 +11,7 @@ namespace IndividualGames.HappyHourStrategyCase
         [SerializeField] private TextMeshProUGUI m_playerLabel;
         [SerializeField] private TextMeshProUGUI m_resoureLabel;
         [SerializeField] private UnitSignalHub m_unitSignalHub;
+        [SerializeField] private GameObject m_menuFrame;
 
 
         private void Awake()
@@ -32,6 +33,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
         public void PlayerJoined()
         {
+            m_menuFrame.SetActive(false);
             m_playerLabel.text = $"Player {PhotonController.PlayerNumber}";
         }
 

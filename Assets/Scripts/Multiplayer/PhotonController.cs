@@ -9,6 +9,8 @@ namespace IndividualGames.HappyHourStrategyCase
     /// </summary>
     public class PhotonController : MonoBehaviourPunCallbacks
     {
+        [SerializeField] private CanvasEventHub m_canvasEventHub;
+
         public readonly static BasicSignal JoinedRoom = new();
 
         private const string c_roomName = "HappyHourStrategyCase.ServerRoom01";
@@ -18,13 +20,15 @@ namespace IndividualGames.HappyHourStrategyCase
 
         void Awake()
         {
+            m_canvasEventHub.JoinGame.Connect(JoinLobby);
             PhotonNetwork.ConnectUsingSettings();
         }
 
 
-        public override void OnConnectedToMaster()
+        private void JoinLobby()
         {
             PhotonNetwork.JoinLobby();
+
         }
 
 
