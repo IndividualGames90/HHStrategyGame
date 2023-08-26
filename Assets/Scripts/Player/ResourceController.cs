@@ -7,8 +7,6 @@ namespace IndividualGames.HappyHourStrategyCase
     /// </summary>
     public class ResourceController : MonoBehaviour
     {
-        [SerializeField] private UnitSignalHub m_unitSignalHub;
-
         private int m_resourceCount = 0;
         private const int m_woodResourceIncrease = 10;
 

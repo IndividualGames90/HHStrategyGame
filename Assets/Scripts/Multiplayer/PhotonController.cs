@@ -64,5 +64,11 @@ namespace IndividualGames.HappyHourStrategyCase
 
             PhotonNetwork.Destroy(go);
         }
+
+
+        public override void OnLeftRoom()
+        {
+
+        }
     }
 }

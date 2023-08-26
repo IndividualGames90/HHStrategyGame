@@ -11,13 +11,13 @@ namespace IndividualGames.HappyHourStrategyCase
     {
         public BasicSignal<int> ResourceCollected = new();
 
-        private float m_moveSpeed = 3.5f;
-        private WaitForEndOfFrame m_moveWait = new();
         private bool m_unitMoving = false;
+        private const float c_moveSpeed = 3.5f;
+        private WaitForEndOfFrame m_moveWait = new();
 
-        private NavGridElement m_currentNavGridElement;
-        private List<GameObject> m_pathList;
         private int m_pathIterator = 0;
+        private List<GameObject> m_pathList;
+        private NavGridElement m_currentNavGridElement;
 
         private ResourceController m_resourceController;
 
@@ -61,20 +61,6 @@ namespace IndividualGames.HappyHourStrategyCase
         }
 
 
-        private bool SameDestination(Vector3 a_destination)
-        {
-            var currentPosition = transform.position;
-            if (a_destination.x == currentPosition.x &&
-                a_destination.x == currentPosition.y &&
-                a_destination.x == currentPosition.z)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-
         private IEnumerator MoveDownThePathList()
         {
             m_unitMoving = true;
@@ -86,7 +72,7 @@ namespace IndividualGames.HappyHourStrategyCase
                 currentDestination.y = initialPosition.y;
 
                 float distanceToDestination = (initialPosition - currentDestination).sqrMagnitude;
-                float moveDuration = distanceToDestination / (m_moveSpeed * m_moveSpeed);
+                float moveDuration = distanceToDestination / (c_moveSpeed * c_moveSpeed);
 
                 float elapsedTime = 0f;
 
@@ -104,6 +90,20 @@ namespace IndividualGames.HappyHourStrategyCase
             }
 
             m_unitMoving = false;
+        }
+
+
+        private bool SameDestination(Vector3 a_destination)
+        {
+            var currentPosition = transform.position;
+            if (a_destination.x == currentPosition.x &&
+                a_destination.x == currentPosition.y &&
+                a_destination.x == currentPosition.z)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -39,6 +39,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
                 var unitController = unit.GetComponent<UnitController>();
                 unitController.Init(m_playerController.GetComponent<ResourceController>());
+                m_playerController.RegisterUnit(unit.GetComponent<UnitController>());
 
                 m_unitSignalHub.RegisterToHub(unitController.ResourceCollected);
                 m_unitSignalHub.Initialized = true;
