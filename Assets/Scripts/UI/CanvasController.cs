@@ -16,7 +16,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
         private void Awake()
         {
-            Screen.orientation = ScreenOrientation.LandscapeLeft;
+            Screen.orientation = ScreenOrientation.LandscapeRight;
             m_menuFrame.SetActive(true);
             PhotonController.JoinedRoom.Connect(PlayerJoined);
             m_unitSignalHub.ConnectToHub(ResourceCollected);

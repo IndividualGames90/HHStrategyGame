@@ -82,11 +82,6 @@ namespace IndividualGames.HappyHourStrategyCase
             var go = (GameObject)a_destroyed;
             var photonView = go.GetComponent<PhotonView>();
 
-            if (!photonView.IsMine)
-            {
-                photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
-            }
-
             PhotonNetwork.Destroy(go);
         }
 
