@@ -916,7 +916,7 @@ GameObject:
   m_Component:
   - component: {fileID: 809776837}
   m_Layer: 0
-  m_Name: SceneSpecificElements
+  m_Name: SceneElements
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1295,7 +1295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_gridController: {fileID: 18363637}
-  m_selectionBoxView: {fileID: 1983540811}
+  m_selectionBoxView: {fileID: 673259266}
 --- !u!114 &963194231
 MonoBehaviour:
   m_ObjectHideFlags: 0

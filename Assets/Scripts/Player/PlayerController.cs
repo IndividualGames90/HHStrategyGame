@@ -65,6 +65,10 @@ namespace IndividualGames.HappyHourStrategyCase
             {
                 OnDrag(Input.mousePosition);
             }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                OnRelease();
+            }
         }
 
 
@@ -84,6 +88,10 @@ namespace IndividualGames.HappyHourStrategyCase
                     case TouchPhase.Moved:
                         OnDrag(m_touch.position);
                         break;
+
+                    case TouchPhase.Ended:
+                        OnRelease();
+                        break;
                 }
             }
         }
@@ -97,12 +105,10 @@ namespace IndividualGames.HappyHourStrategyCase
 
             if (RayCastToPlayer())
             {
-                GameObject hitUnit = m_hit.collider.gameObject;
-                m_unitSelector.SelectUnit(hitUnit);
+                m_unitSelector.SelectUnit(m_hit.collider.gameObject);
             }
-            else if ()
+            else if (RayCastToGround())
             {
-                var point = m_hit.point;
                 m_destinationNavGridElement = m_hit.transform.GetComponent<NavGridElement>();
 
                 if (m_destinationNavGridElement != null)
@@ -118,6 +124,12 @@ namespace IndividualGames.HappyHourStrategyCase
             m_selectionBox.StartSelecting(m_dragStartPosition,
                                           a_touchPosition,
                                           m_selectableUnits);
+        }
+
+
+        private void OnRelease()
+        {
+            m_selectionBox.DisableSelectionBox();
         }
 
 

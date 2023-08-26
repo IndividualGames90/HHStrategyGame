@@ -64,6 +64,7 @@ namespace IndividualGames.HappyHourStrategyCase
                                             Quaternion.identity);
 
                     cube.name = $"NavNode {y}{x}";
+                    cube.transform.parent = gameObject.transform;
                     var element = cube.GetComponent<NavGridElement>();
                     element.X = x;
                     element.Y = y;

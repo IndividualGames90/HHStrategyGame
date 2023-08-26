@@ -12,9 +12,11 @@ namespace IndividualGames.HappyHourStrategyCase
         private float m_height;
 
         private RectTransform m_selectionBox;
+
         private Vector2 m_anchoredPositionAdjustment;
         private Vector2 m_sizeDeltaAdjustment;
         private Bounds m_bounds;
+
         private Camera m_mainCamera;
 
         public readonly BasicSignal<ISelectable> Selected = new();
@@ -76,6 +78,12 @@ namespace IndividualGames.HappyHourStrategyCase
                    a_selectionPosition.x < a_bounds.max.x &&
                    a_selectionPosition.y > a_bounds.min.y &&
                    a_selectionPosition.y < a_bounds.max.y;
+        }
+
+
+        public void DisableSelectionBox()
+        {
+            m_selectionBox.sizeDelta = Vector2.zero;
         }
     }
 }
