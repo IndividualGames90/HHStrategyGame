@@ -37,7 +37,7 @@ namespace IndividualGames.HappyHourStrategyCase
         [PunRPC]
         public void DestroyOnNetwork()
         {
-            PhotonController.Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 }

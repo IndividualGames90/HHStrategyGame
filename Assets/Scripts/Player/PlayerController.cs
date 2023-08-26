@@ -32,6 +32,7 @@ namespace IndividualGames.HappyHourStrategyCase
         private SelectionBox m_selectionBox;
 
         private List<ISelectable> m_selectableUnits = new();
+        private List<ISelectable> m_selectedUnits = new();
 
 
         private void Awake()
@@ -121,7 +122,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
         private void OnDrag(Vector2 a_touchPosition)
         {
-            m_selectionBox.StartSelecting(m_dragStartPosition,
+            m_selectedUnits = m_selectionBox.StartSelecting(m_dragStartPosition,
                                           a_touchPosition,
                                           m_selectableUnits);
         }
@@ -130,6 +131,11 @@ namespace IndividualGames.HappyHourStrategyCase
         private void OnRelease()
         {
             m_selectionBox.DisableSelectionBox();
+
+            foreach (var selectedUnit in m_selectedUnits)
+            {
+                m_unitSelector.SelectUnit(selectedUnit.GameObject());
+            }
         }
 
 

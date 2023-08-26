@@ -19,7 +19,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
         private Camera m_mainCamera;
 
-        public readonly BasicSignal<ISelectable> Selected = new();
+        private List<ISelectable> m_selected = new();
 
 
         public SelectionBox(RectTransform a_selectionBox)
@@ -29,10 +29,10 @@ namespace IndividualGames.HappyHourStrategyCase
         }
 
 
-        public void StartSelecting(Vector2 a_startPosition, Vector2 a_endPosition, List<ISelectable> a_selectables)
+        public List<ISelectable> StartSelecting(Vector2 a_startPosition, Vector2 a_endPosition, List<ISelectable> a_selectables)
         {
             ResizeSelectionBox(a_startPosition, a_endPosition);
-            CheckSelectionBox(a_selectables);
+            return CheckSelectionBox(a_selectables);
         }
 
 
@@ -55,20 +55,22 @@ namespace IndividualGames.HappyHourStrategyCase
         }
 
 
-        private void CheckSelectionBox(List<ISelectable> a_selectables)
+        private List<ISelectable> CheckSelectionBox(List<ISelectable> a_selectables)
         {
             foreach (var selectable in a_selectables)
             {
                 if (InsideSelectionBox(m_mainCamera.WorldToScreenPoint(selectable.GameObject().transform.position),
                                        m_bounds))
                 {
-                    UnityEngine.Debug.Log($"Inside Selectedion Box");
+                    m_selected.Add(selectable);
                 }
                 else
                 {
-                    UnityEngine.Debug.Log($"Outside Selectedion Box");
+                    m_selected.Remove(selectable);
                 }
             }
+
+            return m_selected;
         }
 
 
