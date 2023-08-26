@@ -9,12 +9,19 @@ namespace IndividualGames.HappyHourStrategyCase
     public class Collectable : MonoBehaviourPun
     {
         [SerializeField] private int m_collectableValue = 10;
+        private bool m_collected = false;
 
 
         private void OnTriggerEnter(Collider other)
         {
+            if (m_collected)
+            {
+                return;
+            }
+
             if (other.gameObject.GetComponent<UnitController>() is UnitController unitController)
             {
+                m_collected = true;
                 unitController.CollectedResource();
                 DestroyThis();
             }

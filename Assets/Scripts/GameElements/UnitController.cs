@@ -12,7 +12,7 @@ namespace IndividualGames.HappyHourStrategyCase
         public BasicSignal<int> ResourceCollected = new();
 
         private bool m_unitMoving = false;
-        private const float c_moveSpeed = 3.5f;
+        private const float c_moveSpeed = 2.7f;
         private WaitForEndOfFrame m_moveWait = new();
 
         private int m_pathIterator = 0;
