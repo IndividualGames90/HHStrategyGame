@@ -50,5 +50,19 @@ namespace IndividualGames.HappyHourStrategyCase
         {
             Debug.LogError($"{returnCode} {message}");
         }
+
+
+        public new static void Destroy(Object a_destroyed)
+        {
+            var go = (GameObject)a_destroyed;
+            var photonView = go.GetComponent<PhotonView>();
+
+            if (!photonView.IsMine && !PhotonNetwork.IsMasterClient)
+            {
+                photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
+            }
+
+            PhotonNetwork.Destroy(go);
+        }
     }
 }

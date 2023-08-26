@@ -9,6 +9,8 @@ namespace IndividualGames.HappyHourStrategyCase
     /// </summary>
     public class UnitController : MonoBehaviour
     {
+        public BasicSignal<int> ResourceCollected = new();
+
         private float m_moveSpeed = 3.5f;
         private WaitForEndOfFrame m_moveWait = new();
         private bool m_unitMoving = false;
@@ -16,6 +18,14 @@ namespace IndividualGames.HappyHourStrategyCase
         private NavGridElement m_currentNavGridElement;
         private List<GameObject> m_pathList;
         private int m_pathIterator = 0;
+
+        private ResourceController m_resourceController;
+
+
+        public void Init(ResourceController a_resourceController)
+        {
+            m_resourceController = a_resourceController;
+        }
 
 
         private void OnTriggerEnter(Collider other)
@@ -29,12 +39,11 @@ namespace IndividualGames.HappyHourStrategyCase
 
         public void CollectedResource()
         {
-            //TODO: This needs to be either a signal or a Fcall to increase some player value.
-            Debug.Log($"{gameObject.name} collected wood.");
+            ResourceCollected.Emit(m_resourceController.ResourceCollected());
         }
 
 
-        public void MoveToDestination(GridController a_gridController, NavGridElement a_destinationElement/*Vector3 a_destination*/)
+        public void MoveToDestination(GridController a_gridController, NavGridElement a_destinationElement)
         {
             m_pathList = a_gridController.FindPath(m_currentNavGridElement.X,
                                       m_currentNavGridElement.Y,
@@ -47,7 +56,7 @@ namespace IndividualGames.HappyHourStrategyCase
             if (!m_unitMoving || !SameDestination(initialDestination))
             {
                 StopAllCoroutines();
-                StartCoroutine(MoveCoroutine(initialDestination));
+                StartCoroutine(MoveDownThePathList());
             }
         }
 
@@ -66,7 +75,7 @@ namespace IndividualGames.HappyHourStrategyCase
         }
 
 
-        private IEnumerator MoveCoroutine(Vector3 a_destination)
+        private IEnumerator MoveDownThePathList()
         {
             m_unitMoving = true;
 
@@ -76,7 +85,6 @@ namespace IndividualGames.HappyHourStrategyCase
                 var currentDestination = m_pathList[m_pathIterator].transform.position;
                 currentDestination.y = initialPosition.y;
 
-                //float distanceToDestination = Vector3.Distance(initialPosition, currentDestination);
                 float distanceToDestination = (initialPosition - currentDestination).sqrMagnitude;
                 float moveDuration = distanceToDestination / (m_moveSpeed * m_moveSpeed);
 

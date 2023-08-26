@@ -4,9 +4,9 @@
 
 > Parameters prefixed a_ in Camel.
 
-> Public members in Pascal.
-
 > Private consts prefixed c_ in Camel.
+
+> Public members in Pascal.
 
 > Everything else pretty much modern Unity standard.
 
@@ -18,8 +18,10 @@
 
 > [SerializedField] on top. Then ordered by accesibility.
 
-> Braces on ifs regardless of line amount.
+> Braces on ifs, regardless of line amount.
 
 > Lambda as much as possible on Properties and Switch. Never on methods.
+
+> I refrain from using Is- Get- Set- prefixes as they feel tired and overused. IsBlocked --> Blocked, GetPlayerHealth --> PlayerHealth
 
 > Anywhere I forget these, please forgive.  :>
