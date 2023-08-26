@@ -15,6 +15,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
         private void Awake()
         {
+            PhotonController.JoinedRoom.Connect(PlayGameClip);
             PlayLoadingClip();
         }
 
@@ -30,7 +31,7 @@ namespace IndividualGames.HappyHourStrategyCase
         public void PlayGameClip()
         {
             m_source.Stop();
-            m_source.clip = m_loadingClip;
+            m_source.clip = m_gameClip;
             m_source.Play();
         }
     }

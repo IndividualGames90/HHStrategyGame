@@ -3900,7 +3900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_loadingClip: {fileID: 8300000, guid: 13c256d572150d64cbe09d6013ad3a11, type: 3}
-  m_gameClip: {fileID: 0}
+  m_gameClip: {fileID: 8300000, guid: fb70217cd097e354487fe02ddc327cc5, type: 3}
   m_source: {fileID: 2084938328}
 --- !u!4 &2084938330
 Transform:
