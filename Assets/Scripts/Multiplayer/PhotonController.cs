@@ -28,15 +28,36 @@ namespace IndividualGames.HappyHourStrategyCase
         }
 
 
+        public static bool RoomIsMaxxed()
+        {
+            return PhotonNetwork.CurrentRoom.PlayerCount > PhotonNetwork.CurrentRoom.MaxPlayers;
+        }
+
+
         public override void OnJoinedLobby()
         {
-            PhotonNetwork.JoinOrCreateRoom(c_roomName, new RoomOptions { MaxPlayers = 2, IsOpen = true, IsVisible = true }, TypedLobby.Default);
+            PhotonNetwork.JoinOrCreateRoom(c_roomName,
+                                           new RoomOptions
+                                           {
+                                               MaxPlayers = 2,
+                                               IsOpen = true,
+                                               IsVisible = true
+                                           },
+                                           TypedLobby.Default);
         }
 
 
         public override void OnJoinedRoom()
         {
-            JoinedRoom.Emit();
+            if (RoomIsMaxxed())
+            {
+                OnJoinRandomFailed(0, "Room is full.");
+                OnLeftRoom();
+            }
+            else
+            {
+                JoinedRoom.Emit();
+            }
         }
 
 
@@ -57,7 +78,7 @@ namespace IndividualGames.HappyHourStrategyCase
             var go = (GameObject)a_destroyed;
             var photonView = go.GetComponent<PhotonView>();
 
-            if (!photonView.IsMine && !PhotonNetwork.IsMasterClient)
+            if (!photonView.IsMine)
             {
                 photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
             }
@@ -68,7 +89,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
         public override void OnLeftRoom()
         {
-            PhotonNetwork.Disconnect();
+            PhotonNetwork.LeaveLobby();
         }
     }
 }
