@@ -30,9 +30,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
         public void DestroyThis()
         {
-
             GetComponent<PhotonView>().RPC("DestroyOnNetwork", RpcTarget.All);
-
         }
 
 
