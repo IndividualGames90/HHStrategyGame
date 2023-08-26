@@ -38,7 +38,7 @@ namespace IndividualGames.HappyHourStrategyCase
         }
 
 
-        public void OnVolumeChanged(int a_newVolume)
+        public void OnVolumeChanged(float a_newVolume)
         {
             m_source.volume = a_newVolume;
         }

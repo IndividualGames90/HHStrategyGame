@@ -8,7 +8,7 @@ namespace IndividualGames.HappyHourStrategyCase
     public class CanvasEventHub : MonoBehaviour
     {
         public readonly BasicSignal JoinGame = new();
-        public readonly BasicSignal<int> VolumeChanged = new();
+        public readonly BasicSignal<float> VolumeChanged = new();
 
 
         public void OnJoinGame()
@@ -17,7 +17,7 @@ namespace IndividualGames.HappyHourStrategyCase
         }
 
 
-        public void OnVolumeChanged(int a_volume)
+        public void OnVolumeChanged(float a_volume)
         {
             VolumeChanged.Emit(a_volume);
         }
