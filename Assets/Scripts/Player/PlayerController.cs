@@ -25,6 +25,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
         private Stopwatch m_stopwatch = new();
         private const float c_updateInterval = .1f;
+        private float m_elapsedTime;
 
 
         private void Awake()
@@ -36,7 +37,8 @@ namespace IndividualGames.HappyHourStrategyCase
 
         void Update()
         {
-            if (m_stopwatch.Elapsed.Milliseconds > c_updateInterval)
+            m_elapsedTime = m_stopwatch.Elapsed.Milliseconds / 1000f;
+            if (m_elapsedTime > c_updateInterval)
             {
                 MouseInput();//Had to have mouse input to test Multiplayer with editor/phone combo.
                 TouchInput();

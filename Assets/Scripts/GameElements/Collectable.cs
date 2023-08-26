@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 namespace IndividualGames.HappyHourStrategyCase
@@ -5,7 +6,7 @@ namespace IndividualGames.HappyHourStrategyCase
     /// <summary>
     /// Interract with players to be collected.
     /// </summary>
-    public class Collectable : MonoBehaviour
+    public class Collectable : MonoBehaviourPun
     {
         [SerializeField] private int m_collectableValue = 10;
 
@@ -15,8 +16,21 @@ namespace IndividualGames.HappyHourStrategyCase
             if (other.gameObject.GetComponent<UnitController>() is UnitController unitController)
             {
                 unitController.CollectedResource();
-                Destroy(gameObject);
+                DestroyThis();
             }
+        }
+
+
+        public void DestroyThis()
+        {
+            GetComponent<PhotonView>().RPC("DestroyOnNetwork", RpcTarget.All);
+        }
+
+
+        [PunRPC]
+        public void DestroyOnNetwork()
+        {
+            PhotonController.Destroy(gameObject);
         }
     }
 }
