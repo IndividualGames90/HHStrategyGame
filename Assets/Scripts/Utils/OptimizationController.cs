@@ -4,8 +4,10 @@ namespace IndividualGames.HappyHourStrategyCase
 {
     /// <summary>
     /// This is not a real class. This is a hack to circumvent the lack of scene management
-    /// and complex occulusion culling.
+    /// and complex occulusion culling as they are not in the scope of this case.
+    /// 
     /// It handles occlusion on gameobjects not visible during the menu.
+    /// 
     /// This is also a primitive singleton, not a good one.
     /// </summary>
     public class OptimizationController : MonoBehaviour
