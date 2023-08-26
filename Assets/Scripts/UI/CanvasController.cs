@@ -16,6 +16,8 @@ namespace IndividualGames.HappyHourStrategyCase
 
         private void Awake()
         {
+            Screen.orientation = ScreenOrientation.LandscapeLeft;
+            m_menuFrame.SetActive(true);
             PhotonController.JoinedRoom.Connect(PlayerJoined);
             m_unitSignalHub.ConnectToHub(ResourceCollected);
         }
@@ -35,6 +37,7 @@ namespace IndividualGames.HappyHourStrategyCase
         {
             m_menuFrame.SetActive(false);
             m_playerLabel.text = $"Player {PhotonController.PlayerNumber}";
+            OptimizationController.Instance.EnableGameElements();
         }
 
 
