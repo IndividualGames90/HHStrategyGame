@@ -28,7 +28,6 @@ namespace IndividualGames.HappyHourStrategyCase
         private void JoinLobby()
         {
             PhotonNetwork.JoinLobby();
-
         }
 
 
@@ -83,6 +82,12 @@ namespace IndividualGames.HappyHourStrategyCase
             var photonView = go.GetComponent<PhotonView>();
 
             PhotonNetwork.Destroy(go);
+        }
+
+
+        public static void Disconnect()
+        {
+            PhotonNetwork.Disconnect();
         }
 
 

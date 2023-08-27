@@ -11,6 +11,7 @@ namespace IndividualGames.HappyHourStrategyCase
         [SerializeField] private PrefabNameHolder[] m_unitPrefabNames;
         [SerializeField] private UnitSignalHub m_unitSignalHub;
         [SerializeField] private PlayerController m_playerController;
+        [SerializeField] private FormationController m_formationController;
 
         private UnitFactory m_unitFactory;
 
@@ -38,7 +39,8 @@ namespace IndividualGames.HappyHourStrategyCase
                                                 Quaternion.identity);
 
                 var unitController = unit.GetComponent<UnitController>();
-                unitController.Init(m_playerController.GetComponent<ResourceController>());
+                unitController.Init(m_playerController.GetComponent<ResourceController>(),
+                                    m_formationController);
                 m_playerController.RegisterUnit(unit.GetComponent<UnitController>());
 
                 m_unitSignalHub.RegisterToHub(unitController.ResourceCollected);

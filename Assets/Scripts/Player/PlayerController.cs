@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 namespace IndividualGames.HappyHourStrategyCase
@@ -11,6 +10,7 @@ namespace IndividualGames.HappyHourStrategyCase
     {
         [SerializeField] private GridController m_gridController;
         [SerializeField] private RectTransform m_selectionBoxView;
+        [SerializeField] private FormationController m_formationController;
 
         public static int LayerMaskPlayer = 1 << 7;
         public static int LayerMaskGround = 1 << 6;
@@ -25,32 +25,26 @@ namespace IndividualGames.HappyHourStrategyCase
         private UnitSelector m_unitSelector = new();
         private NavGridElement m_destinationNavGridElement = null;
 
-        private Stopwatch m_stopwatch = new();
-        private const float c_updateInterval = .1f;
-        private float m_elapsedTime;
-
         private SelectionBox m_selectionBox;
 
         private List<ISelectable> m_selectableUnits = new();
         private List<ISelectable> m_selectedUnits = new();
 
 
+
         private void Awake()
         {
             m_mainCamera = Camera.main;
-            m_stopwatch.Start();
             m_selectionBox = new(m_selectionBoxView);
+            m_selectionBoxView.gameObject.SetActive(false);
+            PhotonController.JoinedRoom.Connect(JoinedRoom);
         }
 
 
         void Update()
         {
-            m_elapsedTime = m_stopwatch.Elapsed.Milliseconds / 1000f;
-            if (m_elapsedTime > c_updateInterval)
-            {
-                MouseInput();//Had to have mouse input to test Multiplayer with editor/phone combo.
-                TouchInput();
-            }
+            MouseInput();//Had to have mouse input to test Multiplayer with editor/phone combo.
+            TouchInput();
         }
 
 
@@ -58,8 +52,6 @@ namespace IndividualGames.HappyHourStrategyCase
         {
             if (Input.GetMouseButtonDown(0))
             {
-                m_stopwatch.Restart();
-
                 OnTouch(Input.mousePosition);
             }
             else if (Input.GetMouseButton(0))
@@ -77,7 +69,6 @@ namespace IndividualGames.HappyHourStrategyCase
         {
             if (Input.touchCount > 0)
             {
-                m_stopwatch.Restart();
                 m_touch = Input.GetTouch(0);
 
                 switch (m_touch.phase)
@@ -90,7 +81,12 @@ namespace IndividualGames.HappyHourStrategyCase
                         OnDrag(m_touch.position);
                         break;
 
+
                     case TouchPhase.Ended:
+                        OnRelease();
+                        break;
+
+                    case TouchPhase.Canceled:
                         OnRelease();
                         break;
                 }
@@ -114,10 +110,19 @@ namespace IndividualGames.HappyHourStrategyCase
 
                 if (m_destinationNavGridElement != null)
                 {
-                    m_unitSelector.MoveUnitsTo(m_gridController, m_destinationNavGridElement);
+                    MoveUnit();
                 }
             }
         }
+
+
+        private void MoveUnit()
+        {
+            m_formationController.UpdatePosition(m_destinationNavGridElement.transform.position);
+
+            m_unitSelector.MoveUnitsTo(m_gridController, m_destinationNavGridElement);
+        }
+
 
 
         private void OnDrag(Vector2 a_touchPosition)
@@ -145,12 +150,9 @@ namespace IndividualGames.HappyHourStrategyCase
         }
 
 
-        private void OnUnitSelected(ISelectable a_selectedUnit)
+        private void JoinedRoom()
         {
-            if (a_selectedUnit is UnitController unitController)
-            {
-                UnityEngine.Debug.Log("TODO!");
-            }
+            m_selectionBoxView.gameObject.SetActive(true);
         }
 
 

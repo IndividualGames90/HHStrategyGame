@@ -28,6 +28,7 @@ namespace IndividualGames.HappyHourStrategyCase
             if (Application.platform == RuntimePlatform.Android)
             {
                 Debug.Log("App Exiting.");
+                PhotonController.Disconnect();
                 Application.Quit();
             }
         }

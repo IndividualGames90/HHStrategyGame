@@ -20,11 +20,16 @@ namespace IndividualGames.HappyHourStrategyCase
         private NavGridElement m_currentNavGridElement;
 
         private ResourceController m_resourceController;
+        private FormationController m_formationController;
+
+        private int m_currentFormationIndex = -1;
 
 
-        public void Init(ResourceController a_resourceController)
+        public void Init(ResourceController a_resourceController,
+                         FormationController a_formationController)
         {
             m_resourceController = a_resourceController;
+            m_formationController = a_formationController;
         }
 
 
@@ -43,7 +48,8 @@ namespace IndividualGames.HappyHourStrategyCase
         }
 
 
-        public void MoveToDestination(GridController a_gridController, NavGridElement a_destinationElement)
+        public void MoveToDestination(GridController a_gridController,
+                                      NavGridElement a_destinationElement)
         {
             m_pathList = a_gridController.FindPath(m_currentNavGridElement.X,
                                       m_currentNavGridElement.Y,
@@ -64,11 +70,25 @@ namespace IndividualGames.HappyHourStrategyCase
         private IEnumerator MoveDownThePathList()
         {
             m_unitMoving = true;
+            m_formationController.ReleasePosition(m_currentFormationIndex);
+            var tuple = m_formationController.ReserveFirstAvailableOrDefault();
 
             while (m_pathList.Count > m_pathIterator)
             {
                 Vector3 initialPosition = transform.position;
-                var currentDestination = m_pathList[m_pathIterator].transform.position;
+
+                Vector3 currentDestination;
+                var reachedFinalNode = m_pathList.Count - 1 == m_pathIterator;
+                if (reachedFinalNode)
+                {
+                    m_currentFormationIndex = tuple.Item1;
+                    currentDestination = tuple.Item2.position;
+                }
+                else
+                {
+                    currentDestination = m_pathList[m_pathIterator].transform.position;
+                }
+
                 currentDestination.y = initialPosition.y;
 
                 float distanceToDestination = (initialPosition - currentDestination).sqrMagnitude;
@@ -89,6 +109,7 @@ namespace IndividualGames.HappyHourStrategyCase
                 transform.position = currentDestination;
             }
 
+            m_formationController.ReleasePosition(m_currentFormationIndex);
             m_unitMoving = false;
         }
 
