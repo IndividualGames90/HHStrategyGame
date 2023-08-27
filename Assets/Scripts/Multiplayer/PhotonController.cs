@@ -86,6 +86,12 @@ namespace IndividualGames.HappyHourStrategyCase
         }
 
 
+        public static void Disconnect()
+        {
+            PhotonNetwork.Disconnect();
+        }
+
+
         public override void OnLeftRoom()
         {
             PhotonNetwork.LeaveLobby();

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 namespace IndividualGames.HappyHourStrategyCase
@@ -11,6 +10,7 @@ namespace IndividualGames.HappyHourStrategyCase
     {
         [SerializeField] private GridController m_gridController;
         [SerializeField] private RectTransform m_selectionBoxView;
+        [SerializeField] private FormationController m_formationController;
 
         public static int LayerMaskPlayer = 1 << 7;
         public static int LayerMaskGround = 1 << 6;
@@ -25,10 +25,6 @@ namespace IndividualGames.HappyHourStrategyCase
         private UnitSelector m_unitSelector = new();
         private NavGridElement m_destinationNavGridElement = null;
 
-        private Stopwatch m_stopwatch = new();
-        private const float c_updateInterval = .1f;
-        private float m_elapsedTime;
-
         private SelectionBox m_selectionBox;
 
         private List<ISelectable> m_selectableUnits = new();
@@ -38,19 +34,14 @@ namespace IndividualGames.HappyHourStrategyCase
         private void Awake()
         {
             m_mainCamera = Camera.main;
-            m_stopwatch.Start();
             m_selectionBox = new(m_selectionBoxView);
         }
 
 
         void Update()
         {
-            /*m_elapsedTime = m_stopwatch.Elapsed.Milliseconds / 1000f;
-            if (m_elapsedTime > c_updateInterval)
-            {*/
             MouseInput();//Had to have mouse input to test Multiplayer with editor/phone combo.
             TouchInput();
-            //}
         }
 
 
@@ -58,8 +49,6 @@ namespace IndividualGames.HappyHourStrategyCase
         {
             if (Input.GetMouseButtonDown(0))
             {
-                m_stopwatch.Restart();
-
                 OnTouch(Input.mousePosition);
             }
             else if (Input.GetMouseButton(0))
@@ -77,7 +66,6 @@ namespace IndividualGames.HappyHourStrategyCase
         {
             if (Input.touchCount > 0)
             {
-                m_stopwatch.Restart();
                 m_touch = Input.GetTouch(0);
 
                 switch (m_touch.phase)
@@ -119,10 +107,19 @@ namespace IndividualGames.HappyHourStrategyCase
 
                 if (m_destinationNavGridElement != null)
                 {
-                    m_unitSelector.MoveUnitsTo(m_gridController, m_destinationNavGridElement);
+                    MoveUnit();
                 }
             }
         }
+
+
+        private void MoveUnit()
+        {
+            Transform destination = m_formationController.ReserveFirstOrDefault();
+            m_unitSelector.MoveUnitsTo(m_gridController, m_destinationNavGridElement);
+            //m_unitSelector.MoveUnitsTo(m_gridController, destination);
+        }
+
 
 
         private void OnDrag(Vector2 a_touchPosition)
@@ -147,15 +144,6 @@ namespace IndividualGames.HappyHourStrategyCase
         public void RegisterUnit(UnitController unitController)
         {
             m_selectableUnits.Add(unitController);
-        }
-
-
-        private void OnUnitSelected(ISelectable a_selectedUnit)
-        {
-            if (a_selectedUnit is UnitController unitController)
-            {
-                UnityEngine.Debug.Log("TODO!");
-            }
         }
 
 
