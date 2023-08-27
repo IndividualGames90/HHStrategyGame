@@ -81,6 +81,7 @@ namespace IndividualGames.HappyHourStrategyCase
                 var reachedFinalNode = m_pathList.Count - 1 == m_pathIterator;
                 if (reachedFinalNode)
                 {
+                    Debug.Log(tuple.Item1.ToString());
                     m_currentFormationIndex = tuple.Item1;
                     currentDestination = tuple.Item2.position;
                 }
