@@ -9,6 +9,8 @@ namespace IndividualGames.HappyHourStrategyCase
     /// </summary>
     public class UnitController : MonoBehaviour, ISelectable
     {
+        [SerializeField] private UnitAnimator m_unitAnimator;
+
         public BasicSignal<int> ResourceCollected = new();
 
         private WaitForEndOfFrame m_moveWait = new();
@@ -67,6 +69,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
             if (!m_unitMoving || !SameDestination(initialDestination))
             {
+                m_unitAnimator.StopWalking();
                 StopAllCoroutines();
                 StartCoroutine(MoveDownThePathList());
             }
@@ -76,6 +79,7 @@ namespace IndividualGames.HappyHourStrategyCase
         private IEnumerator MoveDownThePathList()
         {
             m_unitMoving = true;
+            m_unitAnimator.ToggleWalking();
             m_formationController.ReleasePosition(m_currentFormationIndex);
             var tuple = m_formationController.ReserveFirstAvailableOrDefault();
 
@@ -107,6 +111,7 @@ namespace IndividualGames.HappyHourStrategyCase
                 {
                     float t = elapsedTime / moveDuration;
                     transform.position = Vector3.Lerp(initialPosition, currentDestination, t);
+                    transform.LookAt(currentDestination);
 
                     elapsedTime += Time.deltaTime;
                     yield return m_moveWait;
@@ -117,6 +122,7 @@ namespace IndividualGames.HappyHourStrategyCase
             }
 
             m_formationController.ReleasePosition(m_currentFormationIndex);
+            m_unitAnimator.ToggleWalking();
             m_unitMoving = false;
         }
 
