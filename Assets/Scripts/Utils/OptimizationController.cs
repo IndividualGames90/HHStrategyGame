@@ -18,7 +18,8 @@ namespace IndividualGames.HappyHourStrategyCase
         public static OptimizationController Instance => m_instance;
         private static OptimizationController m_instance;
 
-        private bool m_navGridVisible = false;
+        private bool m_navGridVisible = true;
+
 
         private void Awake()
         {
@@ -51,7 +52,6 @@ namespace IndividualGames.HappyHourStrategyCase
 
         public void ToggleNavGrid()
         {
-            Debug.Log("a");
             m_navGridVisible = !m_navGridVisible;
             ToggleMeshRenderers(m_navGridParent, m_navGridVisible);
         }

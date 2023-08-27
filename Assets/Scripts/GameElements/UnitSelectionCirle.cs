@@ -20,12 +20,6 @@ namespace IndividualGames.HappyHourStrategyCase
         {
             m_selectionCircle.SetActive(true);
         }
-
-
-        public void Deselected()
-        {
-            m_selectionCircle.SetActive(false);
-        }
     }
 }
 

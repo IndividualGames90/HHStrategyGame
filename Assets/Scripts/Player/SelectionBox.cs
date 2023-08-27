@@ -29,7 +29,9 @@ namespace IndividualGames.HappyHourStrategyCase
         }
 
 
-        public List<ISelectable> StartSelecting(Vector2 a_startPosition, Vector2 a_endPosition, List<ISelectable> a_selectables)
+        public List<ISelectable> StartSelecting(Vector2 a_startPosition,
+                                                Vector2 a_endPosition,
+                                                List<ISelectable> a_selectables)
         {
             ResizeSelectionBox(a_startPosition, a_endPosition);
             return CheckSelectionBox(a_selectables);

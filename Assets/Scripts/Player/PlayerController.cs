@@ -81,7 +81,6 @@ namespace IndividualGames.HappyHourStrategyCase
                         OnDrag(m_touch.position);
                         break;
 
-
                     case TouchPhase.Ended:
                         OnRelease();
                         break;
@@ -128,8 +127,8 @@ namespace IndividualGames.HappyHourStrategyCase
         private void OnDrag(Vector2 a_touchPosition)
         {
             m_selectedUnits = m_selectionBox.StartSelecting(m_dragStartPosition,
-                                          a_touchPosition,
-                                          m_selectableUnits);
+                                                            a_touchPosition,
+                                                            m_selectableUnits);
         }
 
 

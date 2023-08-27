@@ -9,7 +9,7 @@ namespace IndividualGames.HappyHourStrategyCase
     {
         [SerializeField] private Transform[] m_formationPositions;
 
-        /// <summary> True is reserved. </summary>
+        /// <summary> True means position is reserved. </summary>
         private bool[] m_reservations;
 
 
