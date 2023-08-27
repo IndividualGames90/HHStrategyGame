@@ -18,7 +18,7 @@ namespace IndividualGames.HappyHourStrategyCase
         public static OptimizationController Instance => m_instance;
         private static OptimizationController m_instance;
 
-        private bool m_navGridVisible = true;
+        private bool m_navGridVisible = false;
 
         private void Awake()
         {

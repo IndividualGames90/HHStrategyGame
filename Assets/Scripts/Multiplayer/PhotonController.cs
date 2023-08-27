@@ -28,7 +28,6 @@ namespace IndividualGames.HappyHourStrategyCase
         private void JoinLobby()
         {
             PhotonNetwork.JoinLobby();
-
         }
 
 

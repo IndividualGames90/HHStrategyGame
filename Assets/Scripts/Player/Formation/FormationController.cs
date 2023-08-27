@@ -16,28 +16,56 @@ namespace IndividualGames.HappyHourStrategyCase
         private void Awake()
         {
             m_reservations = new bool[m_formationPositions.Length];
+            ReleaseAllPositions();
         }
 
 
-        public Transform ReserveFirstOrDefault()
+        public void UpdatePosition(Vector3 a_newPosition)
         {
-            for (int i = 0; i < m_reservations.Length; ++i)
-            {
-                if (!m_reservations[i])
-                {
-                    return m_formationPositions[i];
-                }
-            }
-            return null;
+            transform.position = a_newPosition;
         }
 
 
-        public void ReleasePositions()
+        public void ReleasePosition(int a_index)
+        {
+            if (!IndexWithinBounds(a_index))
+            {
+                return;
+            }
+
+            Debug.Log($"Released index: {a_index}");
+            m_reservations[a_index] = false;
+        }
+
+
+        public void ReleaseAllPositions()
         {
             for (int i = 0; i < m_reservations.Length; i++)
             {
                 m_reservations[i] = false;
             }
+        }
+
+
+        /// <summary> Retrieve first availabel spot on the formation or return null. </summary>
+        /// <returns>Index, Transform tuple</returns>
+        public (int, Transform) ReserveFirstAvailableOrDefault()
+        {
+            for (int i = 0; i < m_reservations.Length; ++i)
+            {
+                if (!m_reservations[i])
+                {
+                    m_reservations[i] = true;
+                    return (i, m_formationPositions[i]);
+                }
+            }
+            return (-1, null);
+        }
+
+
+        public bool IndexWithinBounds(int a_index)
+        {
+            return 0 <= a_index && a_index < m_reservations.Length;
         }
     }
 }

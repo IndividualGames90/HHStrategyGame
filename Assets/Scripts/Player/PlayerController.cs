@@ -118,9 +118,9 @@ namespace IndividualGames.HappyHourStrategyCase
 
         private void MoveUnit()
         {
-            Transform destination = m_formationController.ReserveFirstOrDefault();
+            m_formationController.UpdatePosition(m_destinationNavGridElement.transform.position);
+
             m_unitSelector.MoveUnitsTo(m_gridController, m_destinationNavGridElement);
-            //m_unitSelector.MoveUnitsTo(m_gridController, destination);
         }
 
 
