@@ -51,10 +51,17 @@ namespace IndividualGames.HappyHourStrategyCase
         public void MoveToDestination(GridController a_gridController,
                                       NavGridElement a_destinationElement)
         {
-            m_pathList = a_gridController.FindPath(m_currentNavGridElement.X,
+            var pathCache = a_gridController.FindPath(m_currentNavGridElement.X,
                                       m_currentNavGridElement.Y,
                                       a_destinationElement.X,
                                       a_destinationElement.Y);
+
+            if (pathCache == null)
+            {
+                return;
+            }
+
+            m_pathList = pathCache;
 
             m_pathIterator = 0;
             var initialDestination = m_pathList[m_pathIterator].transform.position;
@@ -79,9 +86,8 @@ namespace IndividualGames.HappyHourStrategyCase
 
                 Vector3 currentDestination;
                 var reachedFinalNode = m_pathList.Count - 1 == m_pathIterator;
-                if (reachedFinalNode)
+                if (reachedFinalNode && tuple.Item1 != -1)
                 {
-                    Debug.Log(tuple.Item1.ToString());
                     m_currentFormationIndex = tuple.Item1;
                     currentDestination = tuple.Item2.position;
                 }
