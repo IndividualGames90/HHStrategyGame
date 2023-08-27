@@ -45,12 +45,12 @@ namespace IndividualGames.HappyHourStrategyCase
 
         void Update()
         {
-            m_elapsedTime = m_stopwatch.Elapsed.Milliseconds / 1000f;
+            /*m_elapsedTime = m_stopwatch.Elapsed.Milliseconds / 1000f;
             if (m_elapsedTime > c_updateInterval)
-            {
-                MouseInput();//Had to have mouse input to test Multiplayer with editor/phone combo.
-                TouchInput();
-            }
+            {*/
+            MouseInput();//Had to have mouse input to test Multiplayer with editor/phone combo.
+            TouchInput();
+            //}
         }
 
 
@@ -90,7 +90,12 @@ namespace IndividualGames.HappyHourStrategyCase
                         OnDrag(m_touch.position);
                         break;
 
+
                     case TouchPhase.Ended:
+                        OnRelease();
+                        break;
+
+                    case TouchPhase.Canceled:
                         OnRelease();
                         break;
                 }
