@@ -1,6 +1,11 @@
 using UnityEngine;
-
-public class SpawnPointEntry : MonoBehaviour
+namespace IndividualGames.HappyHourStrategyCase
 {
-    [SerializeField] public Transform[] SpawnPositions;
+    /// <summary>
+    /// Editor entry to hold spawn positions.
+    /// </summary>
+    public class SpawnPointEntry : MonoBehaviour
+    {
+        [SerializeField] public Transform[] SpawnPositions;
+    }
 }
