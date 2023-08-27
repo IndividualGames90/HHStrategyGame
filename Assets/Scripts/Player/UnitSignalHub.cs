@@ -6,7 +6,7 @@ using UnityEngine;
 namespace IndividualGames.HappyHourStrategyCase
 {
     /// <summary>
-    /// Hub to expose Unit signals. To not to pass anything related to Units.
+    /// Hub to expose Unit signals. So unit structures can be retained and signalization separated.
     /// </summary>
     public class UnitSignalHub : MonoBehaviour
     {
@@ -15,10 +15,10 @@ namespace IndividualGames.HappyHourStrategyCase
         private List<BasicSignal<int>> m_resourceCollectedHub = new();
         private WaitForEndOfFrame m_delayedConnectWait = new();
 
+
         /// <summary> Register a signal to be emited. </summary>
         public void RegisterToHub(BasicSignal<int> a_registeringSignal)
         {
-            ///DevNote: Normally there would be a key lookup but since we have only one signal it's redundant.
             m_resourceCollectedHub.Add(a_registeringSignal);
         }
 
@@ -37,7 +37,6 @@ namespace IndividualGames.HappyHourStrategyCase
                 yield return m_delayedConnectWait;
             }
 
-            ///DevNote: Normally there would be a key lookup but since we have only one signal it's redundant.
             foreach (var signal in m_resourceCollectedHub)
             {
                 signal.Connect(a_registeringMethod);

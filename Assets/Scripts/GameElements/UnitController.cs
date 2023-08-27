@@ -11,18 +11,17 @@ namespace IndividualGames.HappyHourStrategyCase
     {
         public BasicSignal<int> ResourceCollected = new();
 
-        private bool m_unitMoving = false;
-        private const float c_moveSpeed = 2.7f;
         private WaitForEndOfFrame m_moveWait = new();
-
-        private int m_pathIterator = 0;
         private List<GameObject> m_pathList;
-        private NavGridElement m_currentNavGridElement;
 
+        private NavGridElement m_currentNavGridElement;
         private ResourceController m_resourceController;
         private FormationController m_formationController;
 
+        private bool m_unitMoving = false;
+        private int m_pathIterator = 0;
         private int m_currentFormationIndex = -1;
+        private const float c_moveSpeed = 2.7f;
 
 
         public void Init(ResourceController a_resourceController,
@@ -56,13 +55,13 @@ namespace IndividualGames.HappyHourStrategyCase
                                       a_destinationElement.X,
                                       a_destinationElement.Y);
 
-            if (pathCache == null)
+            var noPathFound = pathCache == null;
+            if (noPathFound)
             {
                 return;
             }
 
             m_pathList = pathCache;
-
             m_pathIterator = 0;
             var initialDestination = m_pathList[m_pathIterator].transform.position;
 
@@ -83,10 +82,12 @@ namespace IndividualGames.HappyHourStrategyCase
             while (m_pathList.Count > m_pathIterator)
             {
                 Vector3 initialPosition = transform.position;
-
                 Vector3 currentDestination;
+
                 var reachedFinalNode = m_pathList.Count - 1 == m_pathIterator;
-                if (reachedFinalNode && tuple.Item1 != -1)
+                var tupleIsValid = tuple.Item1 != -1;
+
+                if (reachedFinalNode && tupleIsValid)
                 {
                     m_currentFormationIndex = tuple.Item1;
                     currentDestination = tuple.Item2.position;
@@ -100,7 +101,6 @@ namespace IndividualGames.HappyHourStrategyCase
 
                 float distanceToDestination = (initialPosition - currentDestination).sqrMagnitude;
                 float moveDuration = distanceToDestination / (c_moveSpeed * c_moveSpeed);
-
                 float elapsedTime = 0f;
 
                 while (elapsedTime < moveDuration)

@@ -5,17 +5,16 @@ using UnityEngine;
 namespace IndividualGames.HappyHourStrategyCase
 {
     /// <summary>
-    /// Core Photon functionality.
+    /// Core Photon functionality and encapsulation.
     /// </summary>
     public class PhotonController : MonoBehaviourPunCallbacks
     {
         [SerializeField] private CanvasEventHub m_canvasEventHub;
 
+        public static int PlayerNumber => PhotonNetwork.LocalPlayer.ActorNumber;
         public readonly static BasicSignal JoinedRoom = new();
 
         private const string c_roomName = "HappyHourStrategyCase.ServerRoom01";
-
-        public static int PlayerNumber => PhotonNetwork.LocalPlayer.ActorNumber;
 
 
         void Awake()
@@ -73,15 +72,6 @@ namespace IndividualGames.HappyHourStrategyCase
         public override void OnCreateRoomFailed(short returnCode, string message)
         {
             Debug.LogError($"{returnCode} {message}");
-        }
-
-
-        public new static void Destroy(Object a_destroyed)
-        {
-            var go = (GameObject)a_destroyed;
-            var photonView = go.GetComponent<PhotonView>();
-
-            PhotonNetwork.Destroy(go);
         }
 
 

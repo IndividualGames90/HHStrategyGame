@@ -7,32 +7,25 @@
     {
         //private Grid<PathNode> grid;
 
-        public int X => x;
-        private int x;
-        public int Y => y;
-        private int y;
+        public int X => m_x;
+        private int m_x;
+        public int Y => m_y;
+        private int m_y;
 
         public int GCost;
         public int HCost;
         public int FCost => HCost + GCost;
 
-        public bool isWalkable;
+        public bool Walkable;
 
-        public PathNode cameFromNode;
+        public PathNode CameFromNode;
 
 
-        public PathNode(/*Grid<PathNode> grid,*/ int x, int y)
+        public PathNode(int x, int y)
         {
-            //this.grid = grid;
-            this.x = x;
-            this.y = y;
-            isWalkable = true;
-        }
-
-
-        public override string ToString()
-        {
-            return x + "," + y;
+            this.m_x = x;
+            this.m_y = y;
+            Walkable = true;
         }
     }
 }

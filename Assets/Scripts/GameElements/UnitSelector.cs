@@ -35,8 +35,7 @@ namespace IndividualGames.HappyHourStrategyCase
         }
 
 
-        public void MoveUnitsTo(GridController a_gridController,
-                                NavGridElement a_destinationElement)
+        public void MoveUnitsTo(GridController a_gridController, NavGridElement a_destinationElement)
         {
             foreach (var unit in m_selectedUnits.Values)
             {

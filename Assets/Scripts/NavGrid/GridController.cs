@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace IndividualGames.HappyHourStrategyCase
 {
-
     /// <summary>
     /// 3D Grid controller
     /// </summary>
@@ -32,7 +31,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
         public List<GameObject> FindPath(int a_startX, int a_startY, int a_endX, int a_endY)
         {
-            m_pathFinding.AssignIsWalkeables(m_navNodes);
+            m_pathFinding.AssignIsWalkables(m_navNodes);
 
             List<PathNode> path = m_pathFinding.FindPath(a_startX, a_startY, a_endX, a_endY);
 
