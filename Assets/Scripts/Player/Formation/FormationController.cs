@@ -22,6 +22,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
         public void UpdatePosition(Vector3 a_newPosition)
         {
+            ReleaseAllPositions();
             transform.position = a_newPosition;
         }
 
@@ -33,7 +34,6 @@ namespace IndividualGames.HappyHourStrategyCase
                 return;
             }
 
-            Debug.Log($"Released index: {a_index}");
             m_reservations[a_index] = false;
         }
 
@@ -47,7 +47,7 @@ namespace IndividualGames.HappyHourStrategyCase
         }
 
 
-        /// <summary> Retrieve first availabel spot on the formation or return null. </summary>
+        /// <summary> Retrieve first available spot on the formation or return null. </summary>
         /// <returns>Index, Transform tuple</returns>
         public (int, Transform) ReserveFirstAvailableOrDefault()
         {

@@ -51,6 +51,7 @@ namespace IndividualGames.HappyHourStrategyCase
 
         public void ToggleNavGrid()
         {
+            Debug.Log("a");
             m_navGridVisible = !m_navGridVisible;
             ToggleMeshRenderers(m_navGridParent, m_navGridVisible);
         }

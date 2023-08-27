@@ -36,14 +36,20 @@ namespace IndividualGames.HappyHourStrategyCase
 
             List<PathNode> path = m_pathFinding.FindPath(a_startX, a_startY, a_endX, a_endY);
 
+            if (path == null)
+            {
+                return null;
+            }
+
             List<GameObject> returnList = new();
 
             foreach (var pathNode in path)
             {
                 returnList.Add(m_navNodes.FirstOrDefault(node =>
-                                    node.GetComponent<NavGridElement>().X == pathNode.X &&
-                                    node.GetComponent<NavGridElement>().Y == pathNode.Y));
+                                node.GetComponent<NavGridElement>().X == pathNode.X &&
+                                node.GetComponent<NavGridElement>().Y == pathNode.Y));
             }
+
 
             return returnList;
         }
@@ -55,13 +61,13 @@ namespace IndividualGames.HappyHourStrategyCase
             {
                 for (int y = 0; y < m_columns; y++)
                 {
-                    GameObject cube = Instantiate(
-                                            m_navNodePrefab,
-                                            m_gridOrigin.position +
-                                            new Vector3(
+                    var spawnAdjustment = new Vector3(
                                                 x * m_navNodePrefab.transform.localScale.x,
                                                 0,
-                                                y * m_navNodePrefab.transform.localScale.y),
+                                                y * m_navNodePrefab.transform.localScale.y);
+                    GameObject cube = Instantiate(
+                                            m_navNodePrefab,
+                                            m_gridOrigin.position + spawnAdjustment,
                                             Quaternion.identity);
 
                     cube.name = $"NavNode {y}{x}";
