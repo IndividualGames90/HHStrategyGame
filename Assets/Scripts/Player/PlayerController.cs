@@ -31,10 +31,13 @@ namespace IndividualGames.HappyHourStrategyCase
         private List<ISelectable> m_selectedUnits = new();
 
 
+
         private void Awake()
         {
             m_mainCamera = Camera.main;
             m_selectionBox = new(m_selectionBoxView);
+            m_selectionBoxView.gameObject.SetActive(false);
+            PhotonController.JoinedRoom.Connect(JoinedRoom);
         }
 
 
@@ -144,6 +147,12 @@ namespace IndividualGames.HappyHourStrategyCase
         public void RegisterUnit(UnitController unitController)
         {
             m_selectableUnits.Add(unitController);
+        }
+
+
+        private void JoinedRoom()
+        {
+            m_selectionBoxView.gameObject.SetActive(true);
         }
 
 
